@@ -8,7 +8,7 @@ use Concrete\Core\Package\Package;
 class Controller extends Package
 {
     protected $pkgHandle = 'c5j_country_attribute';
-    protected $pkgVersion = '0.0.1';
+    protected $pkgVersion = '0.9';
     protected $appVersionRequired = '8.5.4';
 
     /**
@@ -16,7 +16,7 @@ class Controller extends Package
      */
     public function getPackageName()
     {
-        return t('C5J Country Attribute');
+        return t('Macareux Country Attribute');
     }
 
     /**
@@ -24,7 +24,7 @@ class Controller extends Package
      */
     public function getPackageDescription()
     {
-        return t('Add an attribute type for select country.');
+        return t('Add an attribute type to select country.');
     }
 
     /**
@@ -43,6 +43,22 @@ class Controller extends Package
             $category = $service->getByHandle('user');
             if ($category) {
                 $category->getController()->associateAttributeKeyType($type);
+            }
+            $collectionCategory = $service->getByHandle('collection');
+            if ($collectionCategory) {
+                $collectionCategory->getController()->associateAttributeKeyType($type);
+            }
+            $fileCategory = $service->getByHandle('file');
+            if ($fileCategory) {
+                $fileCategory->getController()->associateAttributeKeyType($type);
+            }
+            $eventCategory = $service->getByHandle('event');
+            if ($eventCategory) {
+                $eventCategory->getController()->associateAttributeKeyType($type);
+            }
+            $expressCategory = $service->getByHandle('express');
+            if ($expressCategory) {
+                $expressCategory->getController()->associateAttributeKeyType($type);
             }
         }
 

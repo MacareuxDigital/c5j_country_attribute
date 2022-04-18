@@ -1,2 +1,2 @@
-# C5J Country Attribute
-A concrete5 package to add an attribute type for select country.
+# Macareux Country Attribute
+A Concrete CMS package to add an attribute type for select country.
