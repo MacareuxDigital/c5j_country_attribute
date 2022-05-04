@@ -1,4 +1,5 @@
 <?php
+
 namespace Concrete\Package\C5jCountryAttribute;
 
 use Concrete\Core\Attribute\Category\CategoryService;
@@ -8,11 +9,13 @@ use Concrete\Core\Package\Package;
 class Controller extends Package
 {
     protected $pkgHandle = 'c5j_country_attribute';
+
     protected $pkgVersion = '0.9';
+
     protected $appVersionRequired = '8.5.4';
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getPackageName()
     {
@@ -20,7 +23,7 @@ class Controller extends Package
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getPackageDescription()
     {
@@ -28,7 +31,7 @@ class Controller extends Package
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function install()
     {

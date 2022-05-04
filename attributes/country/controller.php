@@ -1,4 +1,5 @@
 <?php
+
 namespace Concrete\Package\C5jCountryAttribute\Attribute\Country;
 
 use Concrete\Core\Attribute\DefaultController;
