@@ -10,7 +10,7 @@ class Controller extends Package
 {
     protected $pkgHandle = 'c5j_country_attribute';
 
-    protected $pkgVersion = '0.9';
+    protected $pkgVersion = '0.9.1';
 
     protected $appVersionRequired = '8.5.4';
 
