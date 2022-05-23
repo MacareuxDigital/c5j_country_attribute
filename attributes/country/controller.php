@@ -4,10 +4,12 @@ namespace Concrete\Package\C5jCountryAttribute\Attribute\Country;
 
 use Concrete\Core\Attribute\DefaultController;
 use Concrete\Core\Attribute\FontAwesomeIconFormatter;
+use Concrete\Core\Attribute\SimpleTextExportableAttributeInterface;
+use Concrete\Core\Error\ErrorList\ErrorList;
 use Concrete\Core\Form\Service\Form;
 use Punic\Territory;
 
-class Controller extends DefaultController
+class Controller extends DefaultController implements SimpleTextExportableAttributeInterface
 {
     public $helpers = ['form'];
 
@@ -36,5 +38,43 @@ class Controller extends DefaultController
     public function getDisplayValue()
     {
         return Territory::getName($this->attributeValue->getValue());
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\Core\Attribute\SimpleTextExportableAttributeInterface::getAttributeValueTextRepresentation()
+     */
+    public function getAttributeValueTextRepresentation()
+    {
+        $value = $this->getAttributeValueObject();
+        if ($value === null) {
+            $result = '';
+        } else {
+            $result = (string) $value->getValue();
+        }
+
+        return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see \Concrete\Core\Attribute\SimpleTextExportableAttributeInterface::updateAttributeValueFromTextRepresentation()
+     */
+    public function updateAttributeValueFromTextRepresentation($textRepresentation, ErrorList $warnings)
+    {
+        $textRepresentation = trim($textRepresentation);
+        $value = $this->getAttributeValueObject();
+        if ($value === null) {
+            if ($textRepresentation !== '') {
+                $value = new \Concrete\Core\Entity\Attribute\Value\Value\TextValue();
+            }
+        }
+        if ($value !== null) {
+            $value->setValue($textRepresentation);
+        }
+
+        return $value;
     }
 }
