@@ -5,6 +5,7 @@ namespace Concrete\Package\C5jCountryAttribute;
 use Concrete\Core\Attribute\Category\CategoryService;
 use Concrete\Core\Attribute\TypeFactory;
 use Concrete\Core\Package\Package;
+use Concrete\Core\Package\PackageService;
 
 class Controller extends Package
 {
@@ -66,5 +67,45 @@ class Controller extends Package
         }
 
         return $pkg;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPackageAutoloaderRegistries()
+    {
+        $registries = parent::getPackageAutoloaderRegistries();
+        if ($this->isMigrationToolInstalled()) {
+            $registries['src/MigrationTool'] = '\C5j\C5jCountryAttribute\MigrationTool';
+        }
+
+        return $registries;
+    }
+
+    public function on_after_packages_start()
+    {
+        if ($this->isMigrationToolInstalled()) {
+            $key_manager = $this->app->make('migration/manager/import/attribute/key');
+            $key_manager->extend('country', function () {
+                return new \C5j\C5jCountryAttribute\MigrationTool\Importer\CIF\Attribute\Key\CountryImporter();
+            });
+
+            $value_manager = $this->app->make('migration/manager/import/attribute/value');
+            $value_manager->extend('country', function () {
+                return new \PortlandLabs\Concrete5\MigrationTool\Importer\CIF\Attribute\Value\StandardImporter();
+            });
+        }
+    }
+
+    private function isMigrationToolInstalled(): bool
+    {
+        /** @var PackageService $packageService */
+        $packageService = $this->app->make(PackageService::class);
+        $migrationToolPackage = $packageService->getByHandle('migration_tool');
+        if ($migrationToolPackage && $migrationToolPackage->isPackageInstalled()) {
+            return true;
+        }
+
+        return false;
     }
 }
